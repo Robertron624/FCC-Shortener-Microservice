@@ -38,7 +38,7 @@ app.get('/', function(req, res) {
 
 // Store url in database
 app.post('/api/shorturl', function(req, res){
-  const myRegex= /https:\/\/www.|http:\/\/www./g;
+  const myRegex= /https:\/\/(www.)?|http:\/\/(www.)?/g;
 
   const bodyOfRequest = req.body.url
 
