@@ -40,26 +40,29 @@ app.get('/', function(req, res) {
 app.post('/api/shorturl', function(req, res){
   const myRegex= /https:\/\/www.|http:\/\/www./g;
 
+  const bodyOfRequest = req.body.url
+
   dns.lookup(req.body.url.replace(myRegex, ""), (err, address, family) => {
-    if(err){
+    if(err || !myRegex.test(bodyOfRequest)){
       res.json({
-        "error": "invalid URL"
+        "error": "invalid url"
       })
     }
     else{
+      const myRandomId = parseInt(Math.random() * 999999)
       urlModel
       .find()
       .exec()
       .then(data => {
         new urlModel({
-          id: data.length + 1,
+          id: myRandomId,
           url: req.body.url
         })
         .save()
         .then(()=>{
           res.json({
             original_url: req.body.url,
-            short_url: data.length + 1
+            short_url: myRandomId
           })
         })
         .catch(err => {
