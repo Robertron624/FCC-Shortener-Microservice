@@ -25,6 +25,8 @@ app.use('/public', express.static(`${process.cwd()}/public`));
 
 app.use(bodyParser.urlencoded({extended:false}))
 
+app.use(bodyParser.json())
+
 const urlScheme = new mongoose.Schema({
   id: Number,
   url: String
