@@ -28,8 +28,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 const urlScheme = new mongoose.Schema({
-  id: Number,
-  url: String
+  original_url: String,
+  short_url: String
 });
 
 let urlModel = mongoose.model('url', urlScheme)
@@ -57,8 +57,8 @@ app.post('/api/shorturl', function(req, res){
       .exec()
       .then(data => {
         new urlModel({
-          id: myRandomId,
-          url: req.body.url
+          original_url: req.body.url,
+          short_url: myRandomId
         })
         .save()
         .then(()=>{
@@ -79,11 +79,11 @@ app.post('/api/shorturl', function(req, res){
 app.get('/api/shorturl/:number', function(req, res){
   urlModel
   .find({
-    id: req.params.number
+    short_url: req.params.number
   })
   .exec()
   .then((url)=>{
-    res.redirect(url[0]["url"]);
+    res.redirect(url[0]["original_url"]);
   });
 })
 
