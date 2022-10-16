@@ -57,13 +57,13 @@ app.post('/api/shorturl', function(req, res){
       .exec()
       .then(data => {
         new urlModel({
-          original_url: req.body.url,
+          original_url: bodyOfRequest,
           short_url: myRandomId
         })
         .save()
         .then(()=>{
           res.json({
-            original_url: req.body.url,
+            original_url: bodyOfRequest,
             short_url: myRandomId
           })
         })
@@ -83,6 +83,9 @@ app.get('/api/shorturl/:number', function(req, res){
   })
   .exec()
   .then((url)=>{
+    console.log('objeto recibido al hacer busqueda -> ', url)
+    console.log('redirigiendo a -> ', url[0].original_url)
+
     res.redirect(url[0]["original_url"]);
   });
 })
